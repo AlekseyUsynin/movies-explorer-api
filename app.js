@@ -37,11 +37,12 @@ app.use(express.json());
 
 mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
 
+app.use(limiter);
+
 app.post('/signin', login);
 app.post('/signup', createUser);
 app.post('/signout', logout);
 
-app.use(limiter);
 app.use(auth);
 app.use(routeCenter);
 
