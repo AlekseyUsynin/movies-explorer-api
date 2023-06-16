@@ -13,12 +13,13 @@ module.exports.login = (req, res, next) => {
   return UserSchema.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'fire', { expiresIn: '7d' });
+      const { password: data, ...otherData } = user.toJSON();
       res
         .cookie('jwt', token, {
           maxAge: 3600000,
           httpOnly: true,
           sameSite: true,
-        }).send(user.toJSON());
+        }).send(otherData);
     })
     .catch((err) => {
       next(err);
