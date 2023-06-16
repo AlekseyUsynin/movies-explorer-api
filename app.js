@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const auth = require('./middlewares/auth');
 const routeCenter = require('./routes/index');
 const errorCenter = require('./middlewares/errorCenter');
+const limiter = require('./middlewares/limiter');
 const { login, logout, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -28,6 +30,7 @@ app.use(cors({
   optionsSuccessStatus: 204,
 }));
 
+app.use(helmet());
 app.use(cookieParser());
 app.use(requestLogger);
 app.use(express.json());
@@ -38,6 +41,7 @@ app.post('/signin', login);
 app.post('/signup', createUser);
 app.post('/signout', logout);
 
+app.use(limiter);
 app.use(auth);
 app.use(routeCenter);
 
