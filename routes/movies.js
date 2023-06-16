@@ -6,8 +6,8 @@ const {
   deleteMovie,
 } = require('../controllers/movies');
 
-router.get('/movies', getMovies); // возвращает все сохранённые текущим пользователем фильмы
-router.post('/movies', createMovies); // создаёт фильм
-router.delete('/movies/:id', deleteMovie); // удаляет сохранённый фильм по id
+router.get('/', getMovies); // возвращает все сохранённые текущим пользователем фильмы
+router.post('/', createMovies); // создаёт фильм
+router.delete('/:id', deleteMovie); // удаляет сохранённый фильм по id
 
 module.exports = router;

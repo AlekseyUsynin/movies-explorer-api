@@ -3,12 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const userRoutes = require('./routes/users');
-const movieRoutes = require('./routes/movies');
-const { login, logout, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const NotFound = require('./errors/NotFound');
+const routeCenter = require('./routes/index');
 const errorCenter = require('./middlewares/errorCenter');
+const { login, logout, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
@@ -41,12 +39,7 @@ app.post('/signup', createUser);
 app.post('/signout', logout);
 
 app.use(auth);
-app.use(userRoutes); // в конце вынести в общий роут index.js
-app.use(movieRoutes); // в конце вынести в общий роут index.js
-
-app.use((req, res, next) => { // подумать, может тоже убрать из app.js ?
-  next(new NotFound('Такой страницы нет.'));
-});
+app.use(routeCenter);
 
 app.use(errorLogger);
 app.use(errorCenter);

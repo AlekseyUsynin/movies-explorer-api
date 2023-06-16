@@ -13,32 +13,9 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovies = (req, res, next) => {
-  const { // Придумать как это сократить
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-  } = req.body;
+  const data = req.body;
   MovieSchema.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-    owner: req.user._id,
+    ...data, owner: req.user._id,
   })
     .then((movie) => {
       res.status(201).send({ data: movie });
