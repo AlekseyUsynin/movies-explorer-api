@@ -20,10 +20,10 @@ app.post('/signin', login);
 app.post('/signup', createUser);
 
 app.use(auth);
-app.use(userRoutes);
-app.use(movieRoutes);
+app.use(userRoutes); // в конце вынести в общий роут index.js
+app.use(movieRoutes); // в конце вынести в общий роут index.js
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { // подумать, может тоже убрать из app.js ?
   next(new NotFound('Такой страницы нет.'));
 });
 
