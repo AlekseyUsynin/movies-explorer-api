@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -5,7 +6,7 @@ const auth = require('./middlewares/auth');
 const userRoutes = require('./routes/users');
 const movieRoutes = require('./routes/movies');
 const errorCenter = require('./middlewares/errorCenter');
-const { login, createUser } = require('./controllers/users');
+const { login, logout, createUser } = require('./controllers/users');
 
 const NotFound = require('./errors/NotFound');
 
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
 
 app.post('/signin', login);
 app.post('/signup', createUser);
+app.post('/signout', logout);
 
 app.use(auth);
 app.use(userRoutes); // в конце вынести в общий роут index.js
