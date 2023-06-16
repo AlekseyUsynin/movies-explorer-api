@@ -1,24 +1,40 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-
-const auth = require('./middlewares/auth');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const userRoutes = require('./routes/users');
 const movieRoutes = require('./routes/movies');
-const errorCenter = require('./middlewares/errorCenter');
 const { login, logout, createUser } = require('./controllers/users');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-
+const auth = require('./middlewares/auth');
 const NotFound = require('./errors/NotFound');
+const errorCenter = require('./middlewares/errorCenter');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+app.use(cors({
+  origin: ['http://localhost:3001',
+    'http://localhost:3000',
+    'http://mesto-usynin.nomoredomains.rocks',
+    'https://mesto-usynin.nomoredomains.rocks',
+    'http://api.mesto-usynin.nomoredomains.rocks',
+    'https://api.mesto-usynin.nomoredomains.rocks',
+  ],
+  credentials: true,
+  preflightContinue: false,
+  methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD',
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+  optionsSuccessStatus: 204,
+}));
 
+app.use(cookieParser());
 app.use(requestLogger);
 app.use(express.json());
+
+mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
 
 app.post('/signin', login);
 app.post('/signup', createUser);

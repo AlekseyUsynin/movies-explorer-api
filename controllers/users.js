@@ -69,11 +69,7 @@ module.exports.getUser = (req, res, next) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Переданы неверные данные.'));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
 

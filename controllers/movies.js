@@ -6,8 +6,6 @@ const Forbidden = require('../errors/Forbidden');
 module.exports.getMovies = (req, res, next) => {
   MovieSchema.find({ owner: req.user._id })
     .then((movies) => {
-      // eslint-disable-next-line no-console
-      console.log(movies); // Очистить вконце
       res.send(movies);
       // }
     })
@@ -56,8 +54,6 @@ module.exports.createMovies = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   const { id } = req.params;
-  // eslint-disable-next-line no-console
-  console.log(id); // очистить в конце
   MovieSchema.findById(id)
     .then((movie) => {
       if (!movie) {
