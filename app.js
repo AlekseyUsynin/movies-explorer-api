@@ -4,14 +4,11 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const auth = require('./middlewares/auth');
+const { SERVER_URL, PORT } = require('./utils/config');
 const routeCenter = require('./routes/index');
 const errorCenter = require('./middlewares/errorCenter');
 const limiter = require('./middlewares/limiter');
-const { login, logout, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -35,17 +32,10 @@ app.use(cookieParser());
 app.use(requestLogger);
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+mongoose.connect(SERVER_URL);
 
 app.use(limiter);
-
-app.post('/signin', login);
-app.post('/signup', createUser);
-app.post('/signout', logout);
-
-app.use(auth);
 app.use(routeCenter);
-
 app.use(errorLogger);
 app.use(errorCenter);
 
