@@ -32,7 +32,7 @@ module.exports.createUserJoi = celebrate({
 
 module.exports.updateUserJoi = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
+    name: Joi.string().min(2).max(30),
     email: Joi.string().custom(emailJoi),
   }),
 });
